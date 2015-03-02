@@ -232,8 +232,6 @@ def coding_strand_to_AA(dna):
         i = i + 1 
     return ''.join(aa)
 
-
-
 def gene_finder(dna):
     """ Returns the amino acid sequences coded by all genes that have an ORF
         larger than the specified threshold.
