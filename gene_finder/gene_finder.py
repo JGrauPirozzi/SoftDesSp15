@@ -2,7 +2,7 @@
 """
 Created on Sun Feb  2 11:24:42 2014
 
-@author: YOUR NAME HERE
+@author: JAIME GRAU
 
 """
 
@@ -176,12 +176,8 @@ def find_all_ORFs_both_strands(dna):
     
     dos = []
 
-    adn = get_reverse_complement(dna)#[::-1]
-    
-
+    adn = get_reverse_complement(dna)
     dos = (find_all_ORFs(dna)+find_all_ORFs(adn))   
-    
-
     return dos
 
 def longest_ORF(dna):
@@ -190,9 +186,10 @@ def longest_ORF(dna):
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
     'ATGCTACATTCGCAT'
     """
-    # TODO: implement this
-    pass
-
+    var = find_all_ORFs_both_strands(dna)
+    if var:
+        return max(var, key=len)
+    return ""
 
 def longest_ORF_noncoding(dna, num_trials):
     """ Computes the maximum length of the longest ORF over num_trials shuffles
@@ -200,10 +197,18 @@ def longest_ORF_noncoding(dna, num_trials):
         
         dna: a DNA sequence
         num_trials: the number of random shuffles
-        returns: the maximum length longest ORF """
-    # TODO: implement this
-    pass
-
+        returns: the maximum length longest ORF 
+    """
+    
+    
+    maxmax = []
+    i = 0
+    while i < num_trials:
+        rand = shuffle_string(dna)
+        maxmax.append(longest_ORF(rand))
+        i = i + 1
+    return len(max(maxmax, key=len))
+    
 def coding_strand_to_AA(dna):
     """ Computes the Protein encoded by a sequence of DNA.  This function
         does not check for start and stop codons (it assumes that the input
@@ -218,17 +223,30 @@ def coding_strand_to_AA(dna):
         >>> coding_strand_to_AA("ATGCCCGCTTT")
         'MPA'
     """
-    # TODO: implement this
-    pass
+    i = 0
+    aa = []
+
+    while i < len(dna)/3:
+        codon = dna[i*3:i*3+3]
+        aa.append(aa_table[codon])
+        i = i + 1 
+    return ''.join(aa)
 
 def gene_finder(dna):
-    """ Returns the amino acid sequences that are likely coded by the specified dna
+    """ Returns the amino acid sequences coded by all genes that have an ORF
+        larger than the specified threshold.
         
         dna: a DNA sequence
-        returns: a list of all amino acid sequences coded by the sequence dna.
+        threshold: the minimum length of the ORF for it to be considered a valid
+                   gene.
+        returns: a list of all amino acid sequences whose ORFs meet the minimum
+                 length specified.
+        >>> gene_finder("ATGCGAATGTAGCATCAAA")
     """
-    # TODO: implement this
-    pass
+    threshold = longest_ORF_noncoding(dna, 1500)
+    print threshold
+    ndna = find_all_ORFs_both_strands(dna) 
+    print ndna
 
 if __name__ == "__main__":
    import doctest
