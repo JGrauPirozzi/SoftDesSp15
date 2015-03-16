@@ -61,7 +61,7 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
         1.5
     """
     # TODO: implement this
-    pass
+    
 
 
 def color_map(val):
@@ -143,4 +143,4 @@ if __name__ == '__main__':
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
-    test_image("noise.png")
+    test_image("myart.png")
