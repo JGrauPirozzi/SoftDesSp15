@@ -92,8 +92,14 @@ class Message(list):
 # Genetic operators
 #-----------------------------------------------------------------------------
 
-# TODO: Implement levenshtein_distance function (see Day 9 in-class exercises)
-# HINT: Now would be a great time to implement memoization if you haven't
+def levenshtein_distance(s1,s2):
+    """ Computes the Levenshtein distance between two input strings """
+    if len(s1) == 0:
+        return len(s2)
+    if len(s2) == 0:
+        return len(s1)
+    return min([int(s1[0] != s2[0]) + levenshtein_distance(s1[1:],s2[1:]),
+    1+levenshtein_distance(s1[1:],s2), 1+levenshtein_distance(s1,s2[1:])])
 
 def evaluate_text(message, goal_text, verbose=VERBOSE):
     """
@@ -120,15 +126,28 @@ def mutate_text(message, prob_ins=0.05, prob_del=0.05, prob_sub=0.05):
                         (legal) character
     """
 
+    l = list(message)
+    length = len(l)
+    position = random.randint(0, length)
+    character = random.choice(VALID_CHARS)
+
+    print length
+    print position
+    print character
+
     if random.random() < prob_ins:
-        # TODO: Implement insertion-type mutation
-        pass
+        print 'Insertion'
+        l.insert[position, character]
 
-    # TODO: Also implement deletion and substitution mutations
-    # HINT: Message objects inherit from list, so they also inherit
-    #       useful list methods
-    # HINT: You probably want to use the VALID_CHARS global variable
+    if random.random() < prob_del:
+        print 'Deletion'
+        l[position] = ""
 
+    if random.random() < prob_sub:
+        print 'Substitution'
+        l[position] = character
+
+    message = "".join(l)
     return (message, )   # Length 1 tuple, required by DEAP
 
 
